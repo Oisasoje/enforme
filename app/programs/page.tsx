@@ -15,48 +15,50 @@ const categories = [
     color: "from-blue-500 to-indigo-600",
     programs: [
       {
-        id: "weight-loss",
-        title: "Weight Loss",
-        description:
-          "A comprehensive program designed to help you shed pounds effectively.",
+        id: "starter",
+        title: "Starter",
+        description: "Perfect for beginners starting their fitness journey.",
         features: [
-          "Personalized meal plans",
-          "HIIT & Cardio sessions",
-          "Weekly progress tracking",
-          "Nutritionist consultation",
+          "3 personal training sessions/month",
+          "Access to all group classes",
+          "Basic nutrition plan",
+          "Locker access",
         ],
-        basePrice: 25000,
-        image: "/weight.jpg",
+        basePrice: 29900, // ₦49/month equivalent
+        image: "/strength.jpg",
         tag: "Most Popular",
       },
       {
-        id: "muscle-building",
-        title: "Muscle Building",
-        description:
-          "Focus on hypertrophy and strength gains with expert-led training.",
+        id: "pro",
+        title: "Pro",
+        description: "For dedicated fitness enthusiasts.",
         features: [
-          "Customized lifting splits",
-          "Strength assessment",
-          "Supplementation guide",
-          "Form correction workshops",
+          "8 personal training sessions/month",
+          "Unlimited group classes",
+          "Custom nutrition plan",
+          "Locker access",
+          "Body composition analysis",
+          "Priority class booking",
         ],
-        basePrice: 30000,
-        image: "/strength.jpg",
+        basePrice: 59900, // ₦99/month equivalent
+        image: "/endurance.jpg",
         tag: "Premium",
       },
       {
-        id: "endurance",
-        title: "Endurance & Stamina",
-        description:
-          "Boost cardiovascular health and stamina for sports or general fitness.",
+        id: "elite",
+        title: "Elite",
+        description: "Maximum results with premium support.",
         features: [
-          "Run & Swim coaching",
-          "Circuit training",
-          "Heart rate monitoring",
-          "Recovery strategies",
+          "Unlimited personal training",
+          "Unlimited group classes",
+          "Premium nutrition coaching",
+          "Private locker",
+          "Monthly body composition analysis",
+          "Priority everything",
+          "Guest passes (2/month)",
         ],
-        basePrice: 20000,
-        image: "/endurance.jpg",
+        basePrice: 99900, // ₦149/month equivalent
+        image: "/elite.jpg",
       },
     ],
   },
@@ -69,33 +71,51 @@ const categories = [
     color: "from-rose-500 to-orange-500",
     programs: [
       {
-        id: "couple-weight-loss",
-        title: "Couple Weight Loss",
+        id: "couple-starter",
+        title: "Couple Starter",
         description:
-          "A comprehensive program designed for two people to shed pounds effectively.",
+          "Perfect for couples starting their fitness journey together.",
         features: [
-          "Shared meal plans",
-          "Partner HIIT & Cardio sessions",
-          "Weekly progress tracking",
-          "Nutritionist consultation",
+          "Shared personal training sessions",
+          "Access to all group classes",
+          "Basic nutrition plan",
+          "Locker access",
         ],
-        basePrice: 45000,
-        image: "/couple-weight.jpg",
-        tag: "Best Value",
+        basePrice: 129900, // Slightly higher for 2 people
+        image: "/couple-starter.jpg",
+        tag: "Most Popular",
       },
       {
-        id: "couple-strength",
-        title: "Couple Strength",
-        description:
-          "Building strength and fitness together is more rewarding and effective.",
+        id: "couple-pro",
+        title: "Couple Pro",
+        description: "For couples looking to level up their fitness.",
         features: [
-          "Partner lifting splits",
-          "Joint goal setting",
-          "Couple motivation sessions",
-          "Progress reviews together",
+          "Shared 8 personal training sessions/month",
+          "Unlimited group classes",
+          "Custom nutrition plan",
+          "Locker access",
+          "Body composition analysis",
+          "Priority class booking",
         ],
-        basePrice: 55000,
-        image: "/couple-strength.jpg",
+        basePrice: 159900,
+        image: "/couple-weight.jpg",
+        tag: "Premium",
+      },
+      {
+        id: "couple-elite",
+        title: "Couple Elite",
+        description: "Elite training and support for two.",
+        features: [
+          "Unlimited personal training",
+          "Unlimited group classes",
+          "Premium nutrition coaching",
+          "Private locker",
+          "Monthly body composition analysis",
+          "Priority everything",
+          "Guest passes (2/month)",
+        ],
+        basePrice: 299900,
+        image: "/couple-3.jpg",
       },
     ],
   },
@@ -118,7 +138,7 @@ const categories = [
           "Bulk employee discounts",
           "Executive wellness reports",
         ],
-        basePrice: 150000,
+        basePrice: 399900, // Keep corporate pricing separate
         image: "/workplace.jpg",
         tag: "Enterprise",
       },
@@ -193,9 +213,9 @@ export default function ProgramsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="group relative bg-[#c9a961]/30   border border-white/5 rounded-2xl overflow-hidden hover:border-[#c9a961]/30 transition-all duration-500"
+                  className="group relative bg-[#c9a961]/30 border border-white/5 rounded-2xl overflow-hidden hover:border-[#c9a961]/30 transition-all duration-500"
                 >
-                  {/* Image Holder */}
+                  {/* Image */}
                   <div className="h-64 relative overflow-hidden">
                     <Image
                       src={program.image}
@@ -242,7 +262,7 @@ export default function ProgramsPage() {
 
                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                       <div>
-                        <span className="text-gray-500 text-xs block mb-1">
+                        <span className="text-gray-300 text-xs block mb-1">
                           {activeTab === "corporate"
                             ? "Starting at"
                             : "Monthly"}

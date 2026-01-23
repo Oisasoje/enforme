@@ -4,7 +4,7 @@ export function ProgramsSection() {
   const programs = [
     {
       name: "Starter",
-      price: "49",
+      price: "29,990",
       description: "Perfect for beginners starting their fitness journey",
       features: [
         "3 personal training sessions/month",
@@ -15,7 +15,7 @@ export function ProgramsSection() {
     },
     {
       name: "Pro",
-      price: "99",
+      price: "59,990",
       description: "For dedicated fitness enthusiasts",
       features: [
         "8 personal training sessions/month",
@@ -29,7 +29,7 @@ export function ProgramsSection() {
     },
     {
       name: "Elite",
-      price: "149",
+      price: "99,990",
       description: "Maximum results with premium support",
       features: [
         "Unlimited personal training",

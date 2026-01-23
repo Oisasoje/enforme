@@ -12,7 +12,7 @@ export function Header() {
 
     { name: "Programs", href: "/programs" },
     { name: "Locations", href: "/locations" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
