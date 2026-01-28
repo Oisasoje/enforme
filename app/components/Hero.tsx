@@ -1,11 +1,35 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Variants } from "framer-motion";
 
 export function Hero() {
   const router = useRouter();
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.21, 0.47, 0.32, 0.98],
+      },
+    },
+  };
 
   return (
     <section
@@ -14,7 +38,10 @@ export function Hero() {
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
+        <motion.img
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5 }}
           src="/hero.jpg"
           alt="Fitness"
           className="w-full h-full object-cover"
@@ -23,25 +50,39 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl text-white mb-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+      >
+        <motion.h1
+          variants={itemVariants}
+          className="text-5xl sm:text-6xl lg:text-7xl text-white mb-6"
+        >
           Transform Your Life
-        </h1>
-        <p className="text-xl sm:text-2xl text-[#c9a961] mb-8 max-w-3xl mx-auto">
+        </motion.h1>
+        <motion.p
+          variants={itemVariants}
+          className="text-xl sm:text-2xl text-[#c9a961] mb-8 max-w-3xl mx-auto"
+        >
           Premium fitness training and nutrition guidance to help you achieve
           your goals
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        </motion.p>
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+        >
           <button
             onClick={() => router.push("/programs")}
-            className="px-8 py-4 bg-[#c9a961] text-white rounded-full hover:bg-[#b89851] transition-colors flex items-center gap-2 justify-center"
+            className="px-8 py-4 bg-[#c9a961] text-xl font-bold  text-white cursor-pointer rounded-full hover:bg-[#b89851] transition-colors flex items-center gap-2 justify-center"
           >
-            Start Your Journey <ArrowRight size={20} />
+            Train free for 7 days <ArrowRight size={20} />
           </button>
 
           <Dialog.Root>
             <Dialog.Trigger asChild>
-              <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white hover:text-[#1a3a52] transition-colors">
+              <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white hover:text-[#1a3a52] cursor-pointer transition-colors">
                 Learn More
               </button>
             </Dialog.Trigger>
@@ -72,8 +113,8 @@ export function Hero() {
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog.Root>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

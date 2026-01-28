@@ -1,28 +1,45 @@
 "use client";
 
 import { useState } from "react";
-
-//import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // const from = location.state?.from?.pathname || "/";
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: LoginFormValues) => {
     setLoading(true);
+    setError(null);
 
-    // Simulating login
-    setTimeout(() => {
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password");
       setLoading(false);
-      //   toast.success("Welcome back!");
-      //  navigate(from, { replace: true });
-    }, 1000);
+      return;
+    }
+
+    router.push("/");
   };
 
   return (
@@ -33,7 +50,8 @@ export default function LoginPage() {
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -44,15 +62,14 @@ export default function LoginPage() {
               </div>
               <input
                 type="email"
-                required
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#c9a961] focus:border-[#c9a961]"
                 placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register("email", { required: true })}
               />
             </div>
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -63,14 +80,14 @@ export default function LoginPage() {
               </div>
               <input
                 type="password"
-                required
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#c9a961] focus:border-[#c9a961]"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register("password", { required: true })}
               />
             </div>
           </div>
+
+          {error && <p className="text-sm text-red-600 text-center">{error}</p>}
 
           <button
             type="submit"
@@ -86,7 +103,7 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/signup"
             className="text-[#c9a961] font-medium hover:underline"
