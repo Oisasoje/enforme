@@ -8,17 +8,37 @@ import {
   CheckCircle2,
   Dumbbell,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  // Mock Data
-  const user = {
-    name: "Alex Johnson",
-    plan: "Premium Member",
-    status: "Active", // Active, Trial, Overdue
-    trialEnds: "2024-02-01",
-    nextBilling: "2024-02-15",
-    visitsThisMonth: 12,
-  };
+  const [user, setUser] = useState<any>({
+    name: "Loading...",
+    plan: "...",
+    status: "...",
+    visitsThisMonth: 0,
+    nextBilling: "...",
+  });
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          setUser({
+            name: data.user.name,
+            plan: data.user.plan,
+            status: data.user.membership_status,
+            visitsThisMonth: 12, // Mock for now
+            nextBilling: "Feb 15", // Mock for now
+          });
+        }
+      } catch (e) {
+        console.error("Failed to fetch user", e);
+      }
+    }
+    fetchUser();
+  }, []);
 
   const recentActivity = [
     {

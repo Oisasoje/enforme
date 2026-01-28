@@ -2,27 +2,43 @@
 
 import { useState } from "react";
 
-//import { toast } from "sonner";
+import { toast } from "sonner";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulating login
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      toast.success("Welcome back!");
+      router.push("/dashboard");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
       setLoading(false);
-      //   toast.success("Welcome back!");
-      //  navigate(from, { replace: true });
-    }, 1000);
+    }
   };
 
   return (
