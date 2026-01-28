@@ -82,3 +82,73 @@ enum MembershipStatus {
   ACTIVE
   CANCELED
 }
+
+
+model Mandate {
+  id             String   @id @default(cuid())
+  userId         String
+  onepipeId      String   @unique
+  bankCode       String
+  status         MandateStatus
+
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum MandateStatus {
+  PENDING
+  ACTIVE
+  FAILED
+  REVOKED
+}
+
+
+model Invoice {
+  id               String   @id @default(cuid())
+  userId           String
+  amount           Int
+  currency         String   @default("NGN")
+  type             InvoiceType
+  status           InvoiceStatus
+
+  mandateId        String?
+  idempotencyKey   String   @unique
+
+  createdAt        DateTime @default(now())
+  paidAt           DateTime?
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mandate  Mandate? @relation(fields: [mandateId], references: [id])
+}
+
+enum InvoiceType {
+  SUBSCRIPTION
+  ONE_TIME
+  RETRY
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  FAILED
+  DUNNING
+}
+
+model Charge {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  onepipeRef  String   @unique
+  status      ChargeStatus
+  failureReason String?
+
+  createdAt   DateTime @default(now())
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+enum ChargeStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
