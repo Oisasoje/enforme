@@ -15,8 +15,12 @@ type LoginFormValues = {
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+  };
   const {
     register,
     handleSubmit,
