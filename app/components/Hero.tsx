@@ -14,19 +14,32 @@ export function Hero() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const bgTextVariants: Variants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: {
+      opacity: 0.05,
+      x: 0,
+      transition: {
+        duration: 1.2,
+        ease: "easeOut",
       },
     },
   };
@@ -34,20 +47,38 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Background Image */}
+      {/* Background Image / Overlay */}
       <div className="absolute inset-0 z-0">
         <motion.img
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          src="/hero.jpg"
-          alt="Fitness"
-          className="w-full h-full object-cover"
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.6 }}
+          transition={{ duration: 1.8, ease: "easeOut" }}
+          src="/hero-bold.png"
+          alt="Intensity"
+          className="w-full h-full object-cover grayscale brightness-50"
         />
-        <div className="absolute inset-0 bg-linear-to-r  from-[#1a3a52]/90 to-[#1a3a52]/75"></div>
+        <div className="absolute inset-0 bg-radial-at-c from-transparent via-black/40 to-black/80"></div>
       </div>
+
+      {/* Decorative Background Text */}
+      <motion.div
+        variants={bgTextVariants}
+        initial="hidden"
+        animate="visible"
+        className="absolute bottom-10 left-[-5%] z-0 select-none hidden lg:block"
+      >
+        <span
+          className="text-[20rem] font-black text-white leading-none tracking-tighter uppercase whitespace-nowrap opacity-10 blur-[2px]"
+          style={{
+            WebkitTextStroke: "2px rgba(255,255,255,0.3)",
+            color: "transparent",
+          }}
+        >
+          FORGE
+        </span>
+      </motion.div>
 
       {/* Content */}
       <motion.div
@@ -56,58 +87,79 @@ export function Hero() {
         animate="visible"
         className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
       >
-        <motion.h1
-          variants={itemVariants}
-          className="text-5xl sm:text-6xl lg:text-7xl text-white mb-6"
-        >
-          Transform Your Life
-        </motion.h1>
-        <motion.p
-          variants={itemVariants}
-          className="text-xl sm:text-2xl text-[#c9a961] mb-8 max-w-3xl mx-auto"
-        >
-          Premium fitness training and nutrition guidance to help you achieve
-          your goals
-        </motion.p>
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="mb-4 inline-block px-4 py-1 border border-[#FF7A00]/50 bg-[#FF7A00]/10 rounded-full"
+        >
+          <span className="text-[#FF7A00] text-sm font-bold tracking-widest uppercase italic">
+            Elite Status Awaits
+          </span>
+        </motion.div>
+
+        <motion.h1
+          variants={itemVariants}
+          className="text-6xl sm:text-8xl lg:text-9xl font-black text-white mb-6 uppercase tracking-tighter italic"
+        >
+          FORGE YOUR <span className="text-[#FF7A00]">LEGACY</span>
+        </motion.h1>
+
+        <motion.p
+          variants={itemVariants}
+          className="text-lg sm:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto font-medium leading-tight"
+        >
+          The standard has been set. No more excuses. Just pure, unadulterated
+          results.
+        </motion.p>
+
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
           <button
-            onClick={() => router.push("/programs")}
-            className="px-8 py-4 bg-[#c9a961] text-xl font-bold  text-white cursor-pointer rounded-full hover:bg-[#b89851] transition-colors flex items-center gap-2 justify-center"
+            onClick={() => router.push("/signup")}
+            className="group relative px-10 py-5 bg-[#FF7A00] text-xl font-black uppercase text-black cursor-pointer overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95"
           >
-            Train free for 7 days <ArrowRight size={20} />
+            <span className="relative z-10 flex items-center gap-2">
+              Start 7-Day Trial{" "}
+              <ArrowRight
+                size={24}
+                className="group-hover:translate-x-2 transition-transform"
+              />
+            </span>
+            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
           </button>
 
           <Dialog.Root>
             <Dialog.Trigger asChild>
-              <button className="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white hover:text-[#1a3a52] cursor-pointer transition-colors">
-                Learn More
+              <button className="px-10 py-5 border-4 border-white text-white text-xl font-black uppercase hover:bg-white hover:text-black transition-all cursor-pointer">
+                The Philosophy
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-              <Dialog.Content className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full">
-                <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-                  <Dialog.Title className="text-lg font-semibold leading-none tracking-tight text-[#1a3a52]">
-                    About En Forme
+              <Dialog.Overlay className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 transition-opacity" />
+              <Dialog.Content className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] gap-6 border-b-8 border-r-8 border-[#FF7A00] bg-black p-10 text-white shadow-2xl duration-200 sm:rounded-none">
+                <div className="flex flex-col space-y-4">
+                  <Dialog.Title className="text-4xl font-black tracking-tighter uppercase italic text-[#FF7A00]">
+                    Beyond Fitness
                   </Dialog.Title>
-                  <Dialog.Description className="text-sm text-gray-500">
-                    Discover our fitness philosophy and business model.
+                  <Dialog.Description className="text-xl text-gray-400 font-medium">
+                    This isn't a leisure center. It's a forge.
                   </Dialog.Description>
                 </div>
-                <div className="text-gray-600 leading-relaxed">
-                  En Forme is a multi-outlet gym and fitness business designed
-                  around flexible membership plans (monthly/annual), trials,
-                  one-time purchases (merchandise, personal training sessions),
-                  and B2B/corporate memberships. The business runs on a
-                  subscription model where members can sign up digitally, manage
-                  their plans (upgrade/downgrade/pause), and pay through
-                  bank-based payments that are more reliable than card renewals.
+                <div className="text-lg text-gray-200 leading-relaxed font-light space-y-4">
+                  <p>
+                    En Forme was built for those who find comfort in the
+                    struggle. Our multi-outlet ecosystem provides the tools, but
+                    you provide the fire.
+                  </p>
+                  <p>
+                    Flexible memberships, premium equipment, and a
+                    results-driven ecosystem. We don't just sell access; we
+                    provide the environment for total transformation.
+                  </p>
                 </div>
-                <Dialog.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-[#1a3a52] focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-500">
-                  <X className="h-4 w-4" />
+                <Dialog.Close className="absolute right-6 top-6 rounded-none opacity-100 ring-offset-black transition-transform hover:scale-125 focus:outline-none">
+                  <X className="h-8 w-8 text-[#FF7A00]" />
                   <span className="sr-only">Close</span>
                 </Dialog.Close>
               </Dialog.Content>
@@ -115,6 +167,9 @@ export function Hero() {
           </Dialog.Root>
         </motion.div>
       </motion.div>
+
+      {/* Subtle Bottom vignette */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10"></div>
     </section>
   );
 }
