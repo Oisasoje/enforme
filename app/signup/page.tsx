@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-// import { toast } from "sonner";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -15,13 +14,6 @@ export default function SignupPage() {
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    // Simulating signup
-    setTimeout(() => {
-      setLoading(false);
-      //     toast.success("Account created successfully!");
-      //   navigate("/");
-    }, 1000);
   };
 
   return (
