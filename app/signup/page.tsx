@@ -1,21 +1,62 @@
 "use client";
 
 import { useState } from "react";
-
-// import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+type SignupFormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function SignupPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormValues>();
+
+  const onSubmit = async (data: SignupFormValues) => {
     setLoading(true);
+    setError(null);
 
-    // Simulating signup
-    setTimeout(() => {
+    try {
+      // 1. Create user
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.error || "Signup failed");
+      }
+
+      // 2. Auto sign-in
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error("Account created, but login failed");
+      }
+
+      // 3. Redirect
+      router.push("/");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
       setLoading(false);
     }
   };
