@@ -260,7 +260,7 @@ export default function ProgramsPage() {
                       ))}
                     </div>
 
-                    <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                    <div className="pt-6 border-t border-white/5 flex flex-col gap-2">
                       <div>
                         <span className="text-gray-300 text-xs block mb-1">
                           {activeTab === "corporate"
@@ -271,11 +271,14 @@ export default function ProgramsPage() {
                           ₦{program.basePrice.toLocaleString()}
                         </span>
                       </div>
-                      <button className="bg-white text-black p-3 rounded-full hover:bg-[#c9a961] transition-colors group/btn">
-                        <ArrowRight
-                          size={20}
-                          className="group-hover:translate-x-1 transition-transform"
-                        />
+
+                      <button className="bg-white text-black w-full p-3 rounded-full hover:bg-[#c9a961] transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        Claim Free 7-Day Trial
+                        <ArrowRight size={20} />
+                      </button>
+
+                      <button className="text-gray-300 cursor-pointer text-sm underline hover:text-white">
+                        Skip trial & subscribe
                       </button>
                     </div>
                   </div>

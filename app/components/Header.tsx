@@ -1,15 +1,16 @@
 "use client";
 
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, User as UserIcon, LogOut } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export function Header() {
+  const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { name: "Home", href: "/" },
-
     { name: "Programs", href: "/programs" },
     { name: "Locations", href: "/locations" },
     { name: "Contact", href: "/contact" },
@@ -36,32 +37,44 @@ export function Header() {
               </Link>
             ))}
 
-            {/* Cart */}
+            {session ? (
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 text-[#1a3a52]">
+                  <UserIcon size={18} />
+                  <span className="font-medium">{session.user?.name}</span>
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="flex items-center gap-1 text-gray-500 hover:text-red-600 transition-colors"
+                >
+                  <LogOut size={18} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/login"
+                  className="text-[#1a3a52] hover:text-[#c9a961] font-medium transition-colors"
+                >
+                  Sign In
+                </Link>
 
-            <Link
-              href="/login"
-              className="text-[#1a3a52] hover:text-[#c9a961] font-medium transition-colors"
-            >
-              Sign In
-            </Link>
-
-            <button
-              className="px-6 py-2 bg-[#c9a961] text-white rounded-full
-                hover:bg-[#b89851] transition-colors"
-            >
-              <Link href="/signup">Join Now</Link>
-            </button>
+                <Link
+                  href="/signup"
+                  className="px-6 py-2 bg-[#c9a961] text-white rounded-full
+                    hover:bg-[#b89851] transition-colors"
+                >
+                  Join Now
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-4 md:hidden">
             <Link href="/cart" className="relative text-[#1a3a52]">
               <ShoppingCart size={24} />
-              {
-                <span className="absolute -top-2 -right-2 bg-[#c9a961] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                  {/* {cartCount} */}
-                </span>
-              }
             </Link>
             <button
               className="text-[#1a3a52]"
@@ -86,21 +99,42 @@ export function Header() {
                   {link.name}
                 </Link>
               ))}
-              <Link
-                href="/login"
-                className="text-[#1a3a52] hover:text-[#c9a961] transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sign In
-              </Link>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                }}
-                className="px-6 py-2 bg-[#c9a961] text-white rounded-full hover:bg-[#b89851] transition-colors w-full"
-              >
-                Join Now
-              </button>
+
+              {session ? (
+                <>
+                  <div className="flex items-center gap-2 text-[#1a3a52] px-2 py-2">
+                    <UserIcon size={18} />
+                    <span className="font-medium">{session.user?.name}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-2 text-red-600 px-2 py-2"
+                  >
+                    <LogOut size={18} />
+                    <span>Sign Out</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-[#1a3a52] hover:text-[#c9a961] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-6 py-2 bg-[#c9a961] text-white rounded-full hover:bg-[#b89851] transition-colors w-full text-center"
+                  >
+                    Join Now
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

@@ -1,40 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+
+// import { toast } from "sonner";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // Initialized router
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Signup failed");
-      }
-
-      toast.success("Account created successfully!");
-      router.push("/dashboard");
-    } catch (err: any) {
-      toast.error(err.message);
-    } finally {
+    // Simulating signup
+    setTimeout(() => {
       setLoading(false);
     }
   };
@@ -47,7 +28,8 @@ export default function SignupPage() {
           <p className="text-gray-600 mt-2">Join En Forme today</p>
         </div>
 
-        <form onSubmit={handleSignup} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full Name
@@ -57,16 +39,14 @@ export default function SignupPage() {
                 <User size={18} className="text-gray-400" />
               </div>
               <input
-                type="text"
-                required
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#c9a961] focus:border-[#c9a961]"
                 placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                {...register("name", { required: true })}
               />
             </div>
           </div>
 
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -77,15 +57,14 @@ export default function SignupPage() {
               </div>
               <input
                 type="email"
-                required
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#c9a961] focus:border-[#c9a961]"
                 placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register("email", { required: true })}
               />
             </div>
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -96,14 +75,14 @@ export default function SignupPage() {
               </div>
               <input
                 type="password"
-                required
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#c9a961] focus:border-[#c9a961]"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register("password", { required: true, minLength: 6 })}
               />
             </div>
           </div>
+
+          {error && <p className="text-sm text-red-600 text-center">{error}</p>}
 
           <button
             type="submit"
