@@ -18,6 +18,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   membership    Membership?
+  mandates      Mandate[]
+  invoices      Invoice[]
 
   createdAt     DateTime @default(now())
 }
@@ -93,7 +95,8 @@ model Mandate {
 
   createdAt      DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices Invoice[]
 }
 
 enum MandateStatus {
@@ -120,6 +123,7 @@ model Invoice {
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   mandate  Mandate? @relation(fields: [mandateId], references: [id])
+  charges  Charge[]
 }
 
 enum InvoiceType {
