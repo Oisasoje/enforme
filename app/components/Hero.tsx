@@ -126,7 +126,7 @@ export function Hero() {
                 className="group-hover:translate-x-2 transition-transform"
               />
             </span>
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
+            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
           </button>
 
           <Dialog.Root>
@@ -169,7 +169,7 @@ export function Hero() {
       </motion.div>
 
       {/* Subtle Bottom vignette */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-black to-transparent z-10"></div>
     </section>
   );
 }
